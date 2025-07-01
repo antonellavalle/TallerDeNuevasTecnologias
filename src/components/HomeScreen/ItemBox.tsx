@@ -5,11 +5,7 @@ import {
     IGeneroContenidoAudiovisual,
     generosContenidoAudiovisual,
 } from "@/src/data/generosContenidoAudiovisual";
-import {
-    ITipoContenidoAudiovisual,
-    tiposContenidoAudiovisual,
-} from "@/src/data/tiposContenidoAudiovisual";
-import { GenresTags } from "../GenresTags";
+import { Tag } from "../Tag";
 import { useRouter } from 'expo-router'; 
 
 interface IItemBoxProps {
@@ -33,19 +29,11 @@ export function ItemBox ({ id, contenido, tipoId, generosId, imageUrl}: IItemBox
 
             <View style={itemStyles.tagsContainer}>
                 {generos.map((genero) => (
-                    <GenresTags key={genero.id} nombre={genero.nombre} />
+                    <Tag key={genero.id} nombre={genero.nombre} />
                 ))}
             </View>
 
         </TouchableOpacity>
-    );
-}
-
-function getTipoPorId(id: number): ITipoContenidoAudiovisual {
-    const fallback = { id: id, singular: "-", plural: "-" };
-    return (
-        tiposContenidoAudiovisual.find((contenido) => contenido.id === id) ??
-        fallback
     );
 }
 
