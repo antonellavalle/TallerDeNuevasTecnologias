@@ -3,6 +3,7 @@ import { Header } from "@/src/components/HomeScreen/Header"
 import { colors } from '../../../assets/theme/colors';
 import { GameSectionBox } from "@/src/components/HomeScreen/GameSectionBox"
 import { CategoriesSectionBox } from "@/src/components/HomeScreen/CategoriesSectionBox"
+import { tiposContenidoAudiovisual } from "@/src/data/tiposContenidoAudiovisual";
 
 
 export function HomeScreen() {
@@ -14,9 +15,9 @@ export function HomeScreen() {
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}>
-        <CategoriesSectionBox tipo = "serie" /> 
-        <CategoriesSectionBox tipo = "película" /> 
-        <CategoriesSectionBox tipo = "anime" /> 
+        {tiposContenidoAudiovisual.map((tipo) => (
+          <CategoriesSectionBox key={tipo.id} tipo={tipo.singular} />
+        ))}
         <View style={styles.bottomSpacing} />
       </ScrollView>
     </View>
