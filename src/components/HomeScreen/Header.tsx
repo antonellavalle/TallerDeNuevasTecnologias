@@ -5,15 +5,25 @@ import { EstandarButton } from "../EstandarButton";
 import { colors } from '../../../assets/theme/colors';
 import EvilIcons from '@expo/vector-icons/EvilIcons';
 
-export function Header() {
+interface HeaderProps {
+    onFilterPress?: () => void;
+}
+export function Header({ onFilterPress }: HeaderProps) {
     return (
-    <View style={styles.container}>
-        <TextPressStart2P style={styles.title}>Pixdex</TextPressStart2P>
-            <EstandarButton title= "FILTER" icon= <EvilIcons name="gear" size={15} color="white" />
-        />
-    </View>
+        <View style={styles.container}>
+            <TextPressStart2P style={styles.title}>Pixdex</TextPressStart2P>
+            <EstandarButton
+                title="FILTER"
+                icon={<EvilIcons name="gear" size={15} color="white" />}
+                onPress={onFilterPress}
+                borderTopColor={colors.purpuraClaro}
+                borderLeftColor={colors.purpuraClaro}
+                borderBottomColor={colors.purpuraOscuro}
+                borderRightColor={colors.purpuraOscuro}
+            />
+        </View>
     );
-};
+}
 
 const styles = StyleSheet.create({
     container: {

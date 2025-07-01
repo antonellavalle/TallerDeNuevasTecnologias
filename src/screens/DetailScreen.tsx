@@ -37,6 +37,10 @@ export function DetailScreen({ id }: TDetailScreenProps) {
             title="BACK"
             icon={<AntDesign name="arrowleft" size={15} color="white" />}
             onPress={() => router.back()}
+            borderTopColor={colors.purpuraClaro}
+            borderLeftColor={colors.purpuraClaro}
+            borderBottomColor={colors.purpuraOscuro}
+            borderRightColor={colors.purpuraOscuro}
         />
         </View>
 

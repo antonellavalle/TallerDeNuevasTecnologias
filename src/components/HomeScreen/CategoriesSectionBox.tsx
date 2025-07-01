@@ -12,17 +12,33 @@ import { TextPressStart2P } from "../TextPressStart2P";
 
 interface ICategoriasSectionBox {
     tipo: string;
+    selectedTipos: number[];
+    selectedGeneros: number[];
 }
 import CategoriesTags from "../../components/CategoriesTags";
 
-export function CategoriesSectionBox({ tipo }: ICategoriasSectionBox) {
+export function CategoriesSectionBox({ tipo, selectedTipos, selectedGeneros }: ICategoriasSectionBox) {
     const tipoId = tiposContenidoAudiovisual.find(
         (t) => t.singular.toLowerCase() === tipo.toLowerCase()
     )?.id; 
 
-    const contenidosFiltrados = tipoId 
-        ? contenidosAudiovisuales.filter((contenido) => contenido.tipoId === tipoId)
+    const contenidosFiltrados = tipoId
+        ? contenidosAudiovisuales.filter((contenido) => {
+            const matchTipo = contenido.tipoId === tipoId;
+            const filtroTipo = selectedTipos.length === 0 || selectedTipos.includes(contenido.tipoId);
+            const filtroGenero =
+                selectedGeneros.length === 0 ||
+                contenido.generos.some((g) => selectedGeneros.includes(g));
+            return matchTipo && filtroTipo && filtroGenero;
+        })
         : [];
+        //CAMBIO: Evitar mostrar la categoría si hay filtros activos y no hay contenido
+        if (
+            (selectedTipos.length > 0 || selectedGeneros.length > 0) &&
+            contenidosFiltrados.length === 0
+        ) {
+            return null;
+        }
 
         return (
             <View style={styles.container}>
@@ -47,7 +63,9 @@ export function CategoriesSectionBox({ tipo }: ICategoriasSectionBox) {
                 ) : (
                     <View style={styles.emptyContainer}>
                         <TextPressStart2P style={styles.emptyText}>
-                            No hay contenidos de tipo {tipo}
+                            {selectedTipos.length > 0 || selectedGeneros.length > 0
+                                ? 'Sin resultados para los filtros elegidos'
+                                : `No hay contenidos de tipo ${tipo}`}
                         </TextPressStart2P>
                     </View>
                 )}
@@ -61,10 +79,10 @@ const styles = StyleSheet.create({
     container: {
         padding: 5,
         borderWidth: 4,
-        borderColor: colors.grisOscuro, 
+        borderColor: colors.grisOscuro,
         backgroundColor: colors.fondo,
-        marginBottom: 10,
-        flex: 1,
+        marginBottom: 15,
+        minHeight: 100,
     },
     titleContainer: {
         paddingVertical: 5,
@@ -73,20 +91,14 @@ const styles = StyleSheet.create({
         borderBottomColor: colors.grisOscuro,
         marginBottom: 5,
     },
-    title: {
-        color: 'white',
-        fontSize: 12,
-    },
     scrollContent: {
-        padding: 10,
-        paddingLeft: 10,
-        paddingRight: 10,
+        paddingHorizontal: 10,
     },
     emptyContainer: {
         padding: 20,
         alignItems: 'center',
         justifyContent: 'center',
-    },
+        },
     emptyText: {
         color: colors.purpura,
         textAlign: 'center',
