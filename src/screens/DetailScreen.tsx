@@ -4,12 +4,13 @@ import { EstandarButton } from "../components/EstandarButton";
 import { contenidosAudiovisuales } from "@/src/data/contenidosAudiovisuales";
 import { TextPressStart2P } from "../components/TextPressStart2P";
 import { useRouter } from 'expo-router';
-import { GenresTags } from "../components/GenresTags";
+import { Tag } from "../components/Tag";
 import {
     IGeneroContenidoAudiovisual,
     generosContenidoAudiovisual,
 } from "@/src/data/generosContenidoAudiovisual";
 import { AntDesign } from '@expo/vector-icons';
+import { tiposContenidoAudiovisual } from "@/src/data/tiposContenidoAudiovisual";
 
 type TDetailScreenProps = {
     id: string;
@@ -42,11 +43,17 @@ export function DetailScreen({ id }: TDetailScreenProps) {
         <View style={styles.content}>
         <Image source={{ uri: contenido.imageUrl }} style={styles.image} />
         <TextPressStart2P style={styles.title}>{contenido.nombre}</TextPressStart2P>
+        
+        <View style={styles.tagsContainer}>
+            <Tag nombre={getTipoPorId(contenido.tipoId)} />
+        </View>
+        
         <Text style={styles.text}>{contenido.descripcion}</Text>
         <TextPressStart2P style={styles.genres}>Géneros</TextPressStart2P>
         <View style={styles.tagsContainer}>
+            <Tag nombre={getTipoPorId(contenido.tipoId)} />
             {generos.map((genero) => (
-            <GenresTags key={genero.id} nombre={genero.nombre} />
+            <Tag key={genero.id} nombre={genero.nombre} />
             ))}
         </View>
         </View>
@@ -57,6 +64,9 @@ export function DetailScreen({ id }: TDetailScreenProps) {
 function getGeneroPorId(id: number): IGeneroContenidoAudiovisual {
     const fallback = { id, nombre: "-" };
     return generosContenidoAudiovisual.find((genero) => genero.id === id) ?? fallback;
+}
+function getTipoPorId(id: number) {
+    return tiposContenidoAudiovisual.find((t) => t.id === id)?.singular ?? "-";
 }
 
 
