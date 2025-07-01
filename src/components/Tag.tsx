@@ -1,10 +1,10 @@
 import { colors } from '../../assets/theme/colors';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
-type TGenresTagsProps = {
+type TTagsProps = {
     nombre:string;
 }
-export function GenresTags ({nombre}:TGenresTagsProps) {
+export function Tag ({nombre}:TTagsProps) {
     return (
         <View style = {styles.box}>
             <Text style= {styles.text}>{nombre}</Text>
@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
     box: {
         backgroundColor: colors.grisOscuro,
         padding: 5,
+        marginBottom: 10,
     },
     text: {
         fontSize: 8,
