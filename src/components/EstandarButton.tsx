@@ -52,8 +52,9 @@ export function EstandarButton({
 
 const styles = StyleSheet.create({
     buttonContainer: {
-        borderWidth: 1,
-        padding: 8,
+        borderWidth: 2,
+        paddingVertical: 8,
+        paddingHorizontal: 8,
     },
     buttonContent: {
         flexDirection: 'row',
@@ -63,12 +64,12 @@ const styles = StyleSheet.create({
     buttonText: {
         color: 'white',
         fontSize: 10,
-        fontWeight: 'bold',
     },
     iconWrapper: {
-        marginRight: 5,
         alignItems: 'center',
         justifyContent: 'center',
+        marginRight: 9,
+
     },
 });
 

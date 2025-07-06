@@ -6,6 +6,7 @@ import { useRouter } from 'expo-router';
 import { Tag } from "../components/Tag";
 import { useAudiovisuales } from "@/src/context/AudiovisualesContext";
 import { AntDesign } from '@expo/vector-icons';
+import { SafeAreaView } from "react-native-safe-area-context";
 
 type TDetailScreenProps = {
     id: string;
@@ -19,9 +20,11 @@ export function DetailScreen({ id }: TDetailScreenProps) {
 
     if (!contenido || loading) {
         return (
-        <View style={styles.headerContainer}>
-            <Text style={styles.text}>Cargando contenido...</Text>
-        </View>
+            <SafeAreaView style={styles.safeArea} edges={['top', 'bottom']}>
+                <View style={styles.headerContainer}>
+                    <Text style={styles.text}>Cargando contenido...</Text>
+                </View>
+            </SafeAreaView>
         );
     }
 
@@ -37,36 +40,38 @@ export function DetailScreen({ id }: TDetailScreenProps) {
     const generosContenido = contenido.generos.map(getGeneroPorId);
 
     return (
-        <View style={styles.screenContainer}>
-            <View style={styles.headerContainer}>
-                <EstandarButton
-                    title="BACK"
-                    icon={<AntDesign name="arrowleft" size={15} color="white" />}
-                    onPress={() => router.back()}
-                    borderTopColor={colors.purpuraClaro}
-                    borderLeftColor={colors.purpuraClaro}
-                    borderBottomColor={colors.purpuraOscuro}
-                    borderRightColor={colors.purpuraOscuro}
-                />
-            </View>
-
-            <View style={styles.content}>
-                <Image source={{ uri: contenido.imageUrl }} style={styles.image} />
-                <TextPressStart2P style={styles.title}>{contenido.nombre}</TextPressStart2P>
-
-                <View style={styles.tagsContainer}>
-                    <Tag nombre={getTipoPorId(contenido.tipoId)} />
+        <SafeAreaView style={styles.safeArea} edges={['top', 'bottom']}>
+            <View style={styles.screenContainer}>
+                <View style={styles.headerContainer}>
+                    <EstandarButton
+                        title="BACK"
+                        icon={<AntDesign name="arrowleft" size={15} color="white" />}
+                        onPress={() => router.back()}
+                        borderTopColor={colors.purpuraClaro}
+                        borderLeftColor={colors.purpuraClaro}
+                        borderBottomColor={colors.purpuraOscuro}
+                        borderRightColor={colors.purpuraOscuro}
+                    />
                 </View>
 
-                <Text style={styles.text}>{contenido.descripcion}</Text>
-                <TextPressStart2P style={styles.genres}>Géneros</TextPressStart2P>
-                <View style={styles.tagsContainer}>
-                    {generosContenido.map((genero) => (
-                        <Tag key={genero.id} nombre={genero.nombre} />
-                    ))}
+                <View style={styles.content}>
+                    <Image source={{ uri: contenido.imageUrl }} style={styles.image} />
+                    <TextPressStart2P style={styles.title}>{contenido.nombre}</TextPressStart2P>
+
+                    <View style={styles.tagsContainer}>
+                        <Tag nombre={getTipoPorId(contenido.tipoId)} />
+                    </View>
+
+                    <Text style={styles.text}>{contenido.descripcion}</Text>
+                    <TextPressStart2P style={styles.genres}>Géneros</TextPressStart2P>
+                    <View style={styles.tagsContainer}>
+                        {generosContenido.map((genero) => (
+                            <Tag key={genero.id} nombre={genero.nombre} />
+                        ))}
+                    </View>
                 </View>
             </View>
-        </View>
+        </SafeAreaView>
     );
 }
 
@@ -114,5 +119,9 @@ const styles = StyleSheet.create({
         flexGrow: 1,
         padding: 10,
         backgroundColor: colors.fondo,
+    },
+    safeArea: {
+    flex: 1,
+    backgroundColor: colors.fondo,
     },
     });

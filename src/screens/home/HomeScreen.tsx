@@ -7,6 +7,8 @@ import { FilterModal } from "@/src/components/HomeScreen/FilterModal";
 import { useState } from "react";
 import { TextPressStart2P } from "@/src/components/TextPressStart2P";
 import { useAudiovisuales } from "@/src/context/AudiovisualesContext";
+import { SafeAreaView } from "react-native-safe-area-context";
+
 
 export function HomeScreen() {
       const { contenidos, tipos, generos, loading } = useAudiovisuales(); // ✅ CAMBIO
@@ -28,61 +30,69 @@ export function HomeScreen() {
 
       if (loading) {
         return (
-          <View style={styles.emptyGlobalContainer}>
-            <TextPressStart2P style={styles.emptyGlobalText}>Cargando...</TextPressStart2P>
-          </View>
-        );
-      }
+          <SafeAreaView style={styles.safeArea} edges={['top', 'bottom']}>
+              <View style={styles.emptyGlobalContainer}>
+                <TextPressStart2P style={styles.emptyGlobalText}>Cargando...</TextPressStart2P>
+              </View>
+            </SafeAreaView>
+          );
+        }
 
-      const hayResultados = tipos.some((tipo) => {
-        const tipoId = tipo.id;
-        return contenidos.some((contenido) => {
-          const coincideTipo = contenido.tipoId === tipoId;
-          const coincideFiltroTipo = selectedTipos.length === 0 || selectedTipos.includes(tipoId);
-          const coincideFiltroGenero =
-            selectedGeneros.length === 0 ||
-            contenido.generos.some((g) => selectedGeneros.includes(g));
-          return coincideTipo && coincideFiltroTipo && coincideFiltroGenero;
+        const hayResultados = tipos.some((tipo) => {
+          const tipoId = tipo.id;
+          return contenidos.some((contenido) => {
+            const coincideTipo = contenido.tipoId === tipoId;
+            const coincideFiltroTipo = selectedTipos.length === 0 || selectedTipos.includes(tipoId);
+            const coincideFiltroGenero =
+              selectedGeneros.length === 0 ||
+              contenido.generos.some((g) => selectedGeneros.includes(g));
+            return coincideTipo && coincideFiltroTipo && coincideFiltroGenero;
+          });
         });
-      });
-  return(
-  <View style={styles.screenContainer}>
-      <Header onFilterPress={() => setModalVisible(true)} />
-      <GameSectionBox />
-      <ScrollView
-        style={styles.scrollView}
-        contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}>
-        {tipos.map((tipo) => (
-          <CategoriesSectionBox
-            key={tipo.id}
-            tipo={tipo.singular}
+    return(
+      <SafeAreaView style={styles.safeArea} edges={['top', 'bottom']}>
+      <View style={styles.screenContainer}>
+          <Header onFilterPress={() => setModalVisible(true)} />
+          <GameSectionBox />
+          <ScrollView
+            style={styles.scrollView}
+            contentContainerStyle={styles.scrollContent}
+            showsVerticalScrollIndicator={false}>
+            {tipos.map((tipo) => (
+              <CategoriesSectionBox
+                key={tipo.id}
+                tipo={tipo.singular}
+                selectedTipos={selectedTipos}
+                selectedGeneros={selectedGeneros}
+              />
+            ))}
+            {!hayResultados && (
+              <View style={styles.emptyGlobalContainer}>
+                <TextPressStart2P style={styles.emptyGlobalText}>
+                  No se encontraron resultados para los filtros aplicados
+                </TextPressStart2P>
+              </View>
+            )}
+            <View style={styles.bottomSpacing} />
+          </ScrollView>
+          <FilterModal
+            visible={modalVisible}
             selectedTipos={selectedTipos}
             selectedGeneros={selectedGeneros}
+            onApply={handleApply}
+            onReset={handleReset}
+            onClose={() => setModalVisible(false)}
           />
-        ))}
-        {!hayResultados && (
-          <View style={styles.emptyGlobalContainer}>
-            <TextPressStart2P style={styles.emptyGlobalText}>
-              No se encontraron resultados para los filtros aplicados
-            </TextPressStart2P>
-          </View>
-        )}
-        <View style={styles.bottomSpacing} />
-      </ScrollView>
-      <FilterModal
-        visible={modalVisible}
-        selectedTipos={selectedTipos}
-        selectedGeneros={selectedGeneros}
-        onApply={handleApply}
-        onReset={handleReset}
-        onClose={() => setModalVisible(false)}
-      />
-    </View>
+        </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: colors.fondo,
+  },
   screenContainer: { 
     flex: 1, 
     backgroundColor: colors.fondo 

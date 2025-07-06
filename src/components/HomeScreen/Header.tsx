@@ -14,7 +14,7 @@ export function Header({ onFilterPress }: HeaderProps) {
             <TextPressStart2P style={styles.title}>Pixdex</TextPressStart2P>
             <EstandarButton
                 title="FILTER"
-                icon={<EvilIcons name="gear" size={15} color="white" />}
+                icon={<EvilIcons name="gear" size={14} color="white" />}
                 onPress={onFilterPress}
                 borderTopColor={colors.purpuraClaro}
                 borderLeftColor={colors.purpuraClaro}

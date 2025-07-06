@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Modal, View, TextInput, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 import { AntDesign } from "@expo/vector-icons";
 import { colors } from "../../assets/theme/colors";
@@ -10,6 +10,7 @@ import { HangmanSectionBox } from "../components/HangmanScreen/HangmanSectionBox
 import { useAudiovisuales } from "@/src/context/AudiovisualesContext";
 import { GuessModal } from "../components/HangmanScreen/GuessModal";
 import { GameOverModal } from "../components/HangmanScreen/GameOverModal";
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export function HangmanGameScreen() {
     const router = useRouter();
@@ -90,77 +91,89 @@ export function HangmanGameScreen() {
 
     if (loading || (!contenidoActual && !gameCompleted)) {
         return (
-            <TextPressStart2P style={{ color: "white", textAlign: "center" }}>
+            <SafeAreaView
+                style={styles.safeArea}
+                edges={['top', 'bottom']}
+            >
+                <TextPressStart2P style={{ color: "white", textAlign: "center" }}>
                 Cargando...
-            </TextPressStart2P>
+                </TextPressStart2P>
+            </SafeAreaView>
         );
     }
 
     if (gameCompleted) {
         return (
-        <View style={styles.screenContainer}>
-            <TextPressStart2P style={[styles.modalTitle, { color: colors.verde }]}>
-            ¡Juego terminado!
-            </TextPressStart2P>
-            <Text style={{ color: "white", fontSize: 16 }}>Puntaje final: {score}</Text>
-            <EstandarButton
-            title="Home"
-            onPress={() => router.replace("/" as any)}
-            backgroundColor={colors.verde}
-            borderTopColor={colors.purpuraClaro}
-            borderRightColor={colors.purpuraClaro}
-            borderBottomColor={colors.purpuraOscuro}
-            borderLeftColor={colors.purpuraOscuro}
-            />
-        </View>
+            <SafeAreaView
+                style={styles.safeArea}
+                edges={['top', 'bottom']}
+            >
+                <View style={styles.screenContainer}>
+                    <TextPressStart2P style={[styles.modalTitle, { color: colors.verde }]}>
+                    ¡Juego terminado!
+                    </TextPressStart2P>
+                    <Text style={{ color: "white", fontSize: 16 }}>Puntaje final: {score}</Text>
+                    <EstandarButton
+                    title="Home"
+                    onPress={() => router.replace("/" as any)}
+                    backgroundColor={colors.verde}
+                    borderTopColor={colors.purpuraClaro}
+                    borderRightColor={colors.purpuraClaro}
+                    borderBottomColor={colors.purpuraOscuro}
+                    borderLeftColor={colors.purpuraOscuro}
+                    />
+                </View>
+            </SafeAreaView>
         );
     }
 
     return (
-        <View style={styles.screenContainer}>
-            <View style={styles.topBar}>
-                <View style={styles.leftSection}>
-                    <EstandarButton
-                    title="BACK"
-                    onPress={() => router.back()}
-                    icon={<AntDesign name="arrowleft" size={15} color="white" />}
-                    borderTopColor={colors.purpuraClaro}
-                    borderLeftColor={colors.purpuraClaro}
-                    borderBottomColor={colors.purpuraOscuro}
-                    borderRightColor={colors.purpuraOscuro}
-                    />
-                </View>
+        <SafeAreaView style={styles.safeArea} edges={['top', 'bottom']}>
+            <View style={styles.screenContainer}>
+                <View style={styles.topBar}>
+                    <View style={styles.leftSection}>
+                        <EstandarButton
+                        title="BACK"
+                        onPress={() => router.back()}
+                        icon={<AntDesign name="arrowleft" size={15} color="white" />}
+                        borderTopColor={colors.purpuraClaro}
+                        borderLeftColor={colors.purpuraClaro}
+                        borderBottomColor={colors.purpuraOscuro}
+                        borderRightColor={colors.purpuraOscuro}
+                        />
+                    </View>
 
-                <LivesDisplay lives={lives} />
+                    <LivesDisplay lives={lives} />
 
-                <Text style={styles.scoreText}>Score: {score}</Text>
-                </View>
+                    <Text style={styles.scoreText}>Score: {score}</Text>
+                    </View>
 
-            <HangmanSectionBox
-                imageUrl={contenidoActual!.imageUrl}
-                onGuessTitlePress={() => setGuessModalVisible(true)}
-                word={contenidoActual!.nombre}
-                reveal={revealed}
-            />
+                <HangmanSectionBox
+                    imageUrl={contenidoActual!.imageUrl}
+                    onGuessTitlePress={() => setGuessModalVisible(true)}
+                    word={contenidoActual!.nombre}
+                    reveal={revealed}
+                />
 
-            <GuessModal
-                visible={guessModalVisible}
-                guessInput={guessInput}
-                setGuessInput={setGuessInput}
-                onSubmit={handleGuessTitle}
-                onCancel={() => {
-                    setGuessModalVisible(false);
-                    setGuessError(false);
-                }}
-                guessError={guessError}
-            />
+                <GuessModal
+                    visible={guessModalVisible}
+                    guessInput={guessInput}
+                    setGuessInput={setGuessInput}
+                    onSubmit={handleGuessTitle}
+                    onCancel={() => {
+                        setGuessModalVisible(false);
+                        setGuessError(false);
+                    }}
+                    guessError={guessError}
+                />
 
-            <GameOverModal
-                visible={gameOverVisible}
-                score={score}
-                onHome={() => router.replace("/" as any)}
-            />
-        </View>
+                <GameOverModal
+                    visible={gameOverVisible}
+                    score={score}
+                    onHome={() => router.replace("/" as any)}
+                />
+            </View>
+        </SafeAreaView>
     );
 }
 
@@ -202,7 +215,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     modalTitle: {
-        fontWeight: 'bold',
         marginBottom: 10,
         color: 'white',
     },
@@ -213,5 +225,9 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         width: '100%',
         color: colors.grisOscuro,
-    }
+    },
+    safeArea: {
+    flex: 1,
+    backgroundColor: colors.fondo,
+    },
 });

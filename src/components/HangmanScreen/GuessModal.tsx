@@ -1,8 +1,9 @@
 import React from "react";
-import { Modal, View, Text, TextInput, StyleSheet } from "react-native";
-import { colors } from "@/assets/theme/colors";
-import { EstandarButton } from "../EstandarButton";
+import { StyleSheet, TextInput, Text, View } from "react-native";
+import { EstandarModal } from "../EstandarModal";
 import { TextPressStart2P } from "../TextPressStart2P";
+import { EstandarButton } from "../EstandarButton";
+import { colors } from "@/assets/theme/colors";
 
 interface GuessModalProps {
     visible: boolean;
@@ -11,9 +12,9 @@ interface GuessModalProps {
     onSubmit: () => void;
     onCancel: () => void;
     guessError: boolean;
-    }
+}
 
-    export function GuessModal({
+export function GuessModal({
     visible,
     guessInput,
     setGuessInput,
@@ -22,84 +23,47 @@ interface GuessModalProps {
     guessError,
     }: GuessModalProps) {
     return (
-        <Modal visible={visible} transparent animationType="slide">
-        <View style={styles.modalOverlay}>
-            <View style={styles.modalContainer}>
-            <TextPressStart2P style={styles.modalTitle}>Guess the Title</TextPressStart2P>
+        <EstandarModal visible={visible} onClose={onCancel}>
+            <TextPressStart2P style={styles.title}>Guess the Title</TextPressStart2P>
             <TextInput
                 value={guessInput}
                 onChangeText={setGuessInput}
                 placeholder="Enter complete title"
-                style={styles.modalInput}
+                style={styles.input}
+                placeholderTextColor='white'
             />
+            {guessError && <Text style={styles.errorText}>X ERROR</Text>}
             <View style={styles.buttonRow}>
-                {guessError && (
-                <Text style={styles.errorText}>X ERROR</Text>
-                )}
-                <EstandarButton
-                title="SUBMIT GUESS"
-                onPress={onSubmit}
-                backgroundColor={colors.purpura}
-                borderBottomColor={colors.verde}
-                borderLeftColor={colors.verde}
-                borderTopColor={colors.verde}
-                borderRightColor={colors.verde}
-                />
-                <EstandarButton
-                title="CANCEL"
-                onPress={onCancel}
-                backgroundColor={colors.verde}
-                borderBottomColor={colors.grisOscuro}
-                borderLeftColor={colors.grisOscuro}
-                borderTopColor={colors.grisOscuro}
-                borderRightColor={colors.grisOscuro}
-                />
+                <EstandarButton title="SUBMIT GUESS" onPress={onSubmit} />
+                <EstandarButton title="CANCEL" onPress={onCancel} />
             </View>
-            </View>
-        </View>
-        </Modal>
+        </EstandarModal>
     );
 }
 
 const styles = StyleSheet.create({
-    modalOverlay: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "rgba(0,0,0,0.5)",
-    },
-    modalContainer: {
-        backgroundColor: colors.fondo,
-        borderColor: colors.grisOscuro,
-        borderWidth: 3,
-        padding: 20,
-        width: "80%",
-        alignItems: "center",
-    },
-    modalTitle: {
-        fontWeight: "bold",
+    title: {
+        color: colors.blanco,
+        fontSize: 16,
         marginBottom: 10,
-        color: "white",
     },
-    modalInput: {
-        borderWidth: 3,
+    input: {
+        borderWidth: 2,
         borderColor: colors.purpura,
         padding: 10,
         marginBottom: 10,
         width: "100%",
-        color: colors.grisOscuro,
-    },
-    buttonRow: {
-        width: "100%",
-        flexDirection: "row",
-        justifyContent: "flex-end",
-        alignItems: "center",
-        gap: 10,
-        marginTop: 10,
+        color: colors.blanco,
     },
     errorText: {
         color: "red",
         fontSize: 12,
-        marginRight: "auto",
+        marginBottom: 10,
+    },
+    buttonRow: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        gap: 10,
+        width: "100%",
     },
 });

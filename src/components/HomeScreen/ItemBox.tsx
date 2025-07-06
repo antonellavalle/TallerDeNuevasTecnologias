@@ -52,7 +52,6 @@ const itemStyles = StyleSheet.create({
     title: {
         fontSize: 10,
         color: 'white',
-        fontWeight: 'bold',
         textAlign: 'left',
     },
     tagsContainer: {
