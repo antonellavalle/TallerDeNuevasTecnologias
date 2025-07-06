@@ -1,11 +1,15 @@
-import { Stack } from "expo-router";
+// app/_layout.tsx
+import { Slot } from "expo-router";
+import { AudiovisualesProvider } from "@/src/context/AudiovisualesContext";
+import { ContenidosProvider } from "@/src/context/ContenidosContext";
 
-export default function RootLayout() {
+export default function Layout() {
     return (
-        <Stack 
-            screenOptions={{
-                headerShown: false,
-            }}
-        />
+        <AudiovisualesProvider>
+        <ContenidosProvider>
+            <Slot />
+        </ContenidosProvider>
+        </AudiovisualesProvider>
     );
 }
+

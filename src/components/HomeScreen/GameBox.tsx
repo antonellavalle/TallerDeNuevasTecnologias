@@ -1,21 +1,24 @@
 import { colors } from '../../../assets/theme/colors';
 import { TextPressStart2P } from "../TextPressStart2P";
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { useRouter } from 'expo-router';
 
 type TGameBoxProps = {
     tittle:string;
     description:string;
     colorBackground: string
+    route: string;
 }
-export function GameBox ({tittle, description, colorBackground}:TGameBoxProps) {
+export function GameBox ({tittle, description, colorBackground, route}:TGameBoxProps) {
+    const router = useRouter();
     return (
         <View style = {[styles.box, {backgroundColor: colorBackground}]}>
             <TextPressStart2P style={styles.tittle}>{tittle}</TextPressStart2P>
             <Text style={styles.description}>{description}</Text>
             <TouchableOpacity
-                        style={[styles.buttonContainer, {backgroundColor: colorBackground}]}
-                        onPress={() => console.log('Yendo a Jugar')}
-                    >
+                style={[styles.buttonContainer, { backgroundColor: colorBackground }]}
+                onPress={() => router.push(route as any)}
+            >
                     <View style={styles.buttonContent}>
                         <TextPressStart2P style={styles.buttonText}>Jugar</TextPressStart2P>
                     </View>

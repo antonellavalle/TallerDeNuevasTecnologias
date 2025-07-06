@@ -1,12 +1,9 @@
 import { colors } from '../../../assets/theme/colors';
 import { TextPressStart2P } from "../TextPressStart2P";
 import { TouchableOpacity, View, Image, StyleSheet } from 'react-native';
-import {
-    IGeneroContenidoAudiovisual,
-    generosContenidoAudiovisual,
-} from "@/src/data/generosContenidoAudiovisual";
 import { Tag } from "../Tag";
 import { useRouter } from 'expo-router'; 
+import { useAudiovisuales } from "@/src/context/AudiovisualesContext";
 
 interface IItemBoxProps {
     id: string;
@@ -14,12 +11,16 @@ interface IItemBoxProps {
     tipoId: number;
     generosId: number[];
     imageUrl: string;
+    
 }
 
-export function ItemBox ({ id, contenido, tipoId, generosId, imageUrl}: IItemBoxProps) {
+export function ItemBox ({ id, contenido, generosId, imageUrl}: IItemBoxProps) {
     const router = useRouter();;
-    const generos = generosId.map((id) => getGeneroPorId(id));
-
+    const { generos } = useAudiovisuales();
+    const generosDelContenido = generosId.map(id => {
+        const genero = generos.find(g => g.id === id);
+        return genero ?? { id, nombre: "-" };
+    });
     return (
         <TouchableOpacity style={itemStyles.container} 
             onPress={() => router.push({ pathname: "/detail/[id]", params: { id } } as any)}>
@@ -28,7 +29,7 @@ export function ItemBox ({ id, contenido, tipoId, generosId, imageUrl}: IItemBox
             <TextPressStart2P style={itemStyles.title}>{contenido}</TextPressStart2P>
 
             <View style={itemStyles.tagsContainer}>
-                {generos.map((genero) => (
+                {generosDelContenido.map((genero) => (
                     <Tag key={genero.id} nombre={genero.nombre} />
                 ))}
             </View>
@@ -37,12 +38,6 @@ export function ItemBox ({ id, contenido, tipoId, generosId, imageUrl}: IItemBox
     );
 }
 
-function getGeneroPorId(id: number): IGeneroContenidoAudiovisual {
-    const fallback = { id: id, nombre: "-" };
-    return (
-        generosContenidoAudiovisual.find((genero) => genero.id === id) ?? fallback
-    );
-}
 
 const itemStyles = StyleSheet.create({
     container: {

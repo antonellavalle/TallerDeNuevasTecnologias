@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Modal, View, StyleSheet, ScrollView, Text } from 'react-native';
 import { TextPressStart2P } from '../TextPressStart2P';
 import { EstandarButton } from '../EstandarButton';
-import { tiposContenidoAudiovisual } from '@/src/data/tiposContenidoAudiovisual';
-import { generosContenidoAudiovisual } from '@/src/data/generosContenidoAudiovisual';
 import { colors } from '@/assets/theme/colors';
 import { CustomCheckbox } from '../CustomCheckbox';
+import { useAudiovisuales } from '@/src/context/AudiovisualesContext';
 
 interface FilterModalProps {
     visible: boolean;
@@ -26,6 +25,8 @@ export function FilterModal({
 }: FilterModalProps) {
     const [tipos, setTipos] = useState<number[]>(selectedTipos);
     const [generos, setGeneros] = useState<number[]>(selectedGeneros);
+
+    const { tipos: tiposApi, generos: generosApi } = useAudiovisuales();
 
     useEffect(() => {
         setTipos(selectedTipos);
@@ -55,7 +56,7 @@ export function FilterModal({
                         <TextPressStart2P style={styles.title}>Filter Content</TextPressStart2P>
 
                         <TextPressStart2P style={styles.sectionTitle}>Content Types</TextPressStart2P>
-                        {tiposContenidoAudiovisual.map((tipo) => (
+                        {tiposApi.map((tipo) => (
                             <View key={tipo.id} style={styles.checkboxRow}>
                                 <CustomCheckbox
                                     checked={tipos.includes(tipo.id)}
@@ -67,7 +68,7 @@ export function FilterModal({
 
                         <TextPressStart2P style={[styles.sectionTitle, { marginTop: 10 }]}>Genres</TextPressStart2P>
                         <View style={styles.checkboxGrid}>
-                            {generosContenidoAudiovisual.map((genero) => (
+                            {generosApi.map((genero) => (
                                 <View key={genero.id} style={styles.checkboxColumn}>
                                     <View style={styles.checkboxRow}>
                                         <CustomCheckbox

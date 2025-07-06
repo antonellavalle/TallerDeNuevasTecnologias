@@ -1,6 +1,6 @@
 import { colors } from '@/assets/theme/colors';
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { GameBox } from "./GameBox";
 
 export function GameSectionBox() {
@@ -9,11 +9,13 @@ export function GameSectionBox() {
             <GameBox 
             tittle="Desafío del Ahorcado"
             description="Adivina los títulos letra por letra. ¿Cuántos puedes identificar?" 
-            colorBackground={colors.purpura} />
+            colorBackground={colors.purpura}
+            route="/hangman"/>
             <GameBox 
             tittle="Pixel Reveal"
             description="Identifica títulos desde imágenes pixeladas. ¡Pon a prueba tu memoria visual!" 
-            colorBackground={colors.verde} />            
+            colorBackground={colors.verde}
+            route="/hangman"/>            
         </View>
         
     );
