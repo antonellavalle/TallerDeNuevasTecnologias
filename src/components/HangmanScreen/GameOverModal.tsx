@@ -1,9 +1,8 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { EstandarModal } from "../EstandarModal";
+import { Modal, View, Text, StyleSheet } from "react-native";
+import { colors } from "@/assets/theme/colors";
 import { TextPressStart2P } from "../TextPressStart2P";
 import { EstandarButton } from "../EstandarButton";
-import { colors } from "@/assets/theme/colors";
 
 interface GameOverModalProps {
     visible: boolean;
@@ -13,23 +12,49 @@ interface GameOverModalProps {
 
 export function GameOverModal({ visible, score, onHome }: GameOverModalProps) {
     return (
-        <EstandarModal visible={visible} onClose={onHome} dismissOnTouchOutside={false}>
-        <TextPressStart2P style={styles.title}>Game Over</TextPressStart2P>
-        <Text style={styles.score}>Puntaje final: {score}</Text>
-        <EstandarButton title="Home" onPress={onHome} />
-        </EstandarModal>
+        <Modal visible={visible} transparent animationType="fade">
+        <View style={styles.modalOverlay}>
+            <View style={styles.modalContainer}>
+            <TextPressStart2P style={styles.modalTitle}>Game Over</TextPressStart2P>
+            <Text style={styles.scoreText}>Puntaje final: {score}</Text>
+            <EstandarButton
+                title="Home"
+                onPress={onHome}
+                backgroundColor={colors.verde}
+                borderBottomColor={colors.grisOscuro}
+                borderLeftColor={colors.grisOscuro}
+                borderTopColor={colors.grisOscuro}
+                borderRightColor={colors.grisOscuro}
+            />
+            </View>
+        </View>
+        </Modal>
     );
 }
 
 const styles = StyleSheet.create({
-    title: {
-        color: 'red',
+    modalOverlay: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "rgba(0,0,0,0.5)",
+    },
+    modalContainer: {
+        backgroundColor: colors.fondo,
+        borderColor: colors.grisOscuro,
+        borderWidth: 3,
+        padding: 20,
+        width: "80%",
+        alignItems: "center",
+    },
+    modalTitle: {
+        color: "red",
         fontSize: 24,
         marginBottom: 10,
     },
-    score: {
+    scoreText: {
         fontSize: 18,
-        color: colors.blanco,
+        color: "white",
         marginBottom: 10,
     },
 });

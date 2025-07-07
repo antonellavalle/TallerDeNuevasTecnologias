@@ -15,7 +15,7 @@ type GameSectionBoxProps = {
 export function HangmanSectionBox({ imageUrl, onGuessTitlePress, word, reveal }: GameSectionBoxProps) {
     return (
         <View style={styles.container}>
-            <TextPressStart2P>{word}</TextPressStart2P>
+            {/* <TextPressStart2P>{word}</TextPressStart2P> */}
             <View style={styles.containerButtons}>
                 <EstandarButton
                     title="GUESS TITLE"
